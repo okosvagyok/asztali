@@ -27,10 +27,7 @@
                     case ConsoleKey.F3: symbol = '▒'; break;
                     case ConsoleKey.F4: symbol = '░'; break;
                     case ConsoleKey.Spacebar:
-                        var cursorPosition = Console.GetCursorPosition();
-                        Console.Write(symbol);
-                        Console.SetCursorPosition(cursorPosition.Left, cursorPosition.Top);
-                        break;
+                        DrawSymbol(); break;
                     case ConsoleKey.D0:
                     case ConsoleKey.NumPad0:
                         Console.ResetColor(); break;
