@@ -8,13 +8,76 @@
             Console.Write(character ?? symbol);
             Console.SetCursorPosition(cursorPosition.Left, cursorPosition.Top);
         }
+
+        static void drawMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("Új rajz");
+            Console.WriteLine("Rajz törlése");
+            Console.WriteLine("Mentés");
+            Console.WriteLine("Betöltés");
+        }
+
         private static char symbol = '█';
+        private static bool isDrawing = false;
+        private static bool isDeleting = false;
+        private static bool isSaving = false;
+        private static bool isLoading = false;
+        private static bool inMenu = true;
+        private static int currentMenuItem = 0;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
         static void Main(string[] args)
         {
+            drawMenu();
             ConsoleKeyInfo info;
             do
             {
+                info = Console.ReadKey(true);
+                var key = Console.ReadKey(true).Key;
+                switch (key)
+                {
+                    case ConsoleKey.DownArrow:
+                        if (currentMenuItem < 3)
+                        {
+                            currentMenuItem++;
+                        }
+                        break;
+                    case ConsoleKey.UpArrow:
+                        if (currentMenuItem > 0)
+                        {
+                            currentMenuItem--;
+                        }
+                        break;
+                    case ConsoleKey.Enter:
+                        if (currentMenuItem == 0)
+                        {
+                            isDrawing = true;
+                            inMenu = false;
+                        }
+                        else if (currentMenuItem == 1)
+                        {
+                            isDeleting = true;
+                            inMenu = false;
+                        }
+                        else if (currentMenuItem == 2)
+                        {
+                            isSaving = true;
+                            inMenu = false;
+                        }
+                        else if (currentMenuItem == 3)
+                        {
+                            isLoading = true;
+                            inMenu = false;
+                        }
+                        break;
+                    case ConsoleKey.Escape:
+                        inMenu = false;
+                        return;
+                }
+            } while (inMenu);
+            do
+            {
+                Console.Clear();
                 info = Console.ReadKey(true);
                 switch (info.Key)
                 {
@@ -100,7 +163,7 @@
                             DrawSymbol();
                         break;
                 }
-            } while (info.Key != ConsoleKey.Escape);
+            } while (info.Key != ConsoleKey.Escape && isDrawing == true);
         }
     }
 }
