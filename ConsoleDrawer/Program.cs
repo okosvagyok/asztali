@@ -1,7 +1,6 @@
 ﻿namespace ConsoleDrawer;
 using System;
 using System.IO;
-using System.Linq.Expressions;
 
 class Program
 {
@@ -10,7 +9,6 @@ class Program
     static int cursorX = 0, cursorY = 0;
     static ConsoleColor currentColor = ConsoleColor.White;
     static string currentChar = "█";
-    static ConsoleColor cursorColor = ConsoleColor.White;
 
     static void InitScreen()
     {
