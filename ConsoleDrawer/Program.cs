@@ -250,6 +250,7 @@ class Program
 
         string selectedDrawingFile = drawingFiles[selectedOption];
 
+        Console.SetCursorPosition(10, 10);
         Console.WriteLine("Biztosan törölni szeretnéd a rajzot? Törléshez nyomj ENTER, visszalépéshez nyomj ESC gombot!");
         ConsoleKeyInfo confirmKeyInfo = Console.ReadKey(true);
         ConsoleKey confirmKey = confirmKeyInfo.Key;
@@ -264,8 +265,8 @@ class Program
             Console.WriteLine("Törlés megszakítva.");
         }
 
-        Console.WriteLine("Nyomd meg az ESC gombot a visszalépéshez!");
-        Console.ReadKey(true);
+        Console.Clear();
+        DisplayMenu();
     }
 
     static void LoadExistingDrawing()
