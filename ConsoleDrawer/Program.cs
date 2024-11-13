@@ -1,7 +1,6 @@
 ﻿namespace ConsoleDrawer;
 using System;
 using System.IO;
-using System.Data.SQLite;
 
 class Program
 {
@@ -10,12 +9,6 @@ class Program
     static int cursorX = 0, cursorY = 0;
     static ConsoleColor currentColor = ConsoleColor.White;
     static string currentChar = "█";
-    static string connectionString = "Data Source=drawings.db;Version=3;";
-    CREATE TABLE IF NOT EXISTS drawings(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    Content TEXT NOT NULL
-    );
 
     static void InitScreen()
     {
@@ -479,19 +472,6 @@ static void EditDrawing()
 
                     string filePath = $"{fileName}.txt";
                     File.WriteAllLines(filePath, lines);
-
-                    using (var connection = new SQLiteConnection(connectionString))
-                    {
-                        connection.Open();
-                        using (var command = connection.CreateCommand())
-                        {
-                            command.CommandText = "INSERT INTO drawings (name, content) VALUES (@name, @file_path)";
-                            command.Parameters.AddWithValue("@name", fileName);
-                            command.Parameters.AddWithValue("@file_path", filePath);
-                            command.ExecuteNonQuery();
-                        }
-                        connection.Close();
-                    }
                     Console.WriteLine($"Sikeresen mentetted a rajzod. Név: {fileName}");
                     return;
             }
