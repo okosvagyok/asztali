@@ -1,7 +1,9 @@
 ﻿namespace ConsoleDrawer;
 using System;
 using System.IO;
+using System.Reflection.Metadata;
 using Microsoft.EntityFrameworkCore;
+
 
 class Program
 {
@@ -276,7 +278,7 @@ class Program
 
         if (drawingFiles.Length == 0)
         {
-            Console.WriteLine("Nem található ilyen rajz.");
+            Console.WriteLine("Nem található rajz.");
             return;
         }
 
@@ -459,10 +461,7 @@ static void EditDrawing()
                     Console.SetCursorPosition(0, 26);
                     Console.WriteLine("Adj meg egy nevet! Ha nem szeretnéd elmenteni, csak nyomj ENTER-t!");
                     string fileName = Console.ReadLine();
-                    if (fileName == "")
-                    {
-                        return;
-                    }
+                    if (fileName == "") return;
                     string[] lines = new string[25];
                     for (int y = 0; y < 25; y++)
                     {
@@ -477,6 +476,9 @@ static void EditDrawing()
                     string filePath = $"{fileName}.txt";
                     File.WriteAllLines(filePath, lines);
                     Console.WriteLine($"Sikeresen mentetted a rajzod. Név: {fileName}");
+                    var db = new DrawingContext();
+                    string[] newDraw = Directory.GetFiles(".", $"{fileName}.txt");
+                    db.Add(new Draw {Name = fileName, File = newDraw[0]});
                     return;
             }
         }
@@ -487,23 +489,6 @@ static void EditDrawing()
         while (true)
         {
             DisplayMenu();
-        }
-    }
-
-    public class Drawing
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public byte[] File { get; set; }
-    }
-
-    public class DrawingContext : DbContext
-    {
-        public DbSet<Drawing> Drawings { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("");
         }
     }
 }
